@@ -1,0 +1,18 @@
+#Requirements list for profile section
+#1. Username
+#2. Password
+#3. list of previous concerts(possible)
+#4. 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
