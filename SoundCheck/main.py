@@ -1,5 +1,5 @@
 from UserProfile import UserProfile
-from Concert import Concert
+from SoundCheck.Concert import Concert
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import sqlite3
