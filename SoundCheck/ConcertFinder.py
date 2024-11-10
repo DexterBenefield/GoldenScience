@@ -1,5 +1,12 @@
 import requests
 import math
+from Concert import Concert
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+engine = create_engine('sqlite:///app.db')
+Session = sessionmaker(bind=engine)
+session = Session()
+
 def distanceFromMe(lat1, lon1, lat2, lon2):
     radius=3958.8
     # Convert latitude and longitude from degrees to radians
@@ -14,47 +21,67 @@ def distanceFromMe(lat1, lon1, lat2, lon2):
     # Distance in miles
     distance = radius * c
     return distance
-def compileConcerts(eventlist, event):
-    return eventlist.append(event)
+def compile_concerts():
 
 
-url = 'https://app.ticketmaster.com/discovery/v2/events.json'
+    url = 'https://app.ticketmaster.com/discovery/v2/events.json'
 
 
-api_key = 'GWiMxKfIqtPFeOYwdlQnGIYzTVVOeqgz'  
+    api_key = 'GWiMxKfIqtPFeOYwdlQnGIYzTVVOeqgz'  
 
 
-params = {
-    'apikey': api_key,
-    'keyword': 'concert',         # Search for concerts
-    'city': 'New York City',           # Example city
-    'countryCode': 'US',          # Example country code
-    'size': 3                    # Number of events to retrieve
-}
+    params = {
+        'apikey': api_key,
+        'keyword': 'concert',
+        'city': 'Atlanta',
+        'countryCode': 'US',
+        'size': 100
+    }
 
 # Send the GET request
-response = requests.get(url, params=params)
+    response = requests.get(url, params=params)
 
-# Check if the request was successful
-if response.status_code == 200:
+    # Check if the request was successful
+    if response.status_code == 200:
     # Parse the JSON data
-    data = response.json()
+        data = response.json()
     
     # Access events data
-    events = data.get('_embedded', {}).get('events', [])
-latUser = float(input('enter your latitude:'))
-longUser = float(input('enter your longitude:'))
+        events = data.get('_embedded', {}).get('events', [])
+        
+        unique_events = set()
+
+        for event in events:
+            artist = event.get('name')
+            venue = event['_embedded']['venues'][0]
+            venue_name = venue.get('name')
+            venue_address = venue.get('address').get('line1','N/A')
+            event_date = event.get('dates').get('start').get('localDate')
+            
+            event_key = (artist, venue_name, venue_address)
+
+            if event_key not in unique_events and not any(keyword in event_key for keyword in ["Test", "M&G", "VIP"]):
+                unique_events.add(event_key)
+                print(artist, venue_name)
+                print("-------------")
+                print(venue_address, event_date)
+                print("")
+                concert = Concert(artist,venue_name,event_date)
+                concert.add_concert(session)
+def get_all_concerts():
+    concerts = session.query(Concert).all()
+    for concert in concerts:
+        details = concert.display_concert_details()
+        print(details)
 
 
 
+compile_concerts()
+get_all_concerts()
 
-for event in events:
-    venue = event['_embedded']['venues'][0]
-    latEvent = venue['location']['latitude']
-    longEvent = venue['location']['longitude']
 
-    print(distanceFromMe(latUser, longUser, float(latEvent),float(longEvent)))
-    print(latEvent, longEvent)
-    print(venue)
+
+   
+
     
     

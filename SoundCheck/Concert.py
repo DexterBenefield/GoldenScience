@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, Date
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 from datetime import datetime
 
 # Use the same engine and Base as UserProfile
@@ -16,6 +15,8 @@ class Concert(Base):
     venue = Column(String)
     date = Column(Date)
     overall_rating = Column(Float)
+    ratings = None
+    review = Column(String, nullable=True)
 
     def __init__(self, artist_name, venue, date):
         self.artist_name = artist_name
@@ -59,9 +60,9 @@ class Concert(Base):
             'Artist': self.artist_name,
             'Venue': self.venue,
             'Date': self.date,
-            'Ratings': self.ratings,
-            'Overall Rating': self.get_overall_rating(),
-            'Review': self.review
+            'Ratings': self.ratings if self.ratings is not None and any(r is not None for r in self._ratings.values()) else "No Ratings Yet!",
+            'Overall Rating': self.get_overall_rating() if self.ratings is not None and any(r is not None for r in self.ratings.values()) else "No Overall Rating Yet!",
+            'Review': self.review if self.review is not None else "No Reviews Yet!"
         }
 
 # Create the tables
