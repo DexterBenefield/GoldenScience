@@ -27,13 +27,14 @@ def compile_concerts():
     url = 'https://app.ticketmaster.com/discovery/v2/events.json'
 
 
-    api_key = 'GWiMxKfIqtPFeOYwdlQnGIYzTVVOeqgz'  
-
+    api_key = 'GWiMxKfIqtPFeOYwdlQnGIYzTVVOeqgz'
+      
+    userCity = str(input("What city are you in?"))
 
     params = {
         'apikey': api_key,
         'keyword': 'concert',
-        'city': 'Atlanta',
+        'city': userCity,
         'countryCode': 'US',
         'size': 100
     }
@@ -74,10 +75,6 @@ def get_all_concerts():
         details = concert.display_concert_details()
         print(details)
 
-
-
-compile_concerts()
-get_all_concerts()
 
 
 
