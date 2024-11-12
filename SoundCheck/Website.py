@@ -13,6 +13,10 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+@app.route("/")
+def home():
+    return render_template("register.html")
+
 # Route to serve the registration page
 @app.route('/register', methods=['GET'])
 def register_page():
