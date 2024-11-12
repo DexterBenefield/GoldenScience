@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='AccountHandling')
 
 # Database setup
 engine = create_engine('sqlite:///app.db')
