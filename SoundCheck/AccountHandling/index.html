@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="{{ url_for('CssDocs', filename='style.css') }}">
 </head>
 <body>
     <div class="glass-container">
@@ -24,7 +24,7 @@
                 
                 <button type="submit">Login</button>
 
-                <p>Don't have an account? <a href="Register.html" id="register">Signup</a></p>
+                <p>Don't have an account? <a href="register.html" id="register">Signup</a></p>
             </form>
         </div>
     </div>
