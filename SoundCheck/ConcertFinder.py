@@ -61,7 +61,7 @@ def compile_concerts():
             
             event_key = (artist, venue_name, venue_address)
 
-            if event_key not in unique_events and not any(keyword in event_key for keyword in ["Test", "M&G", "VIP"]):
+            if event_key not in unique_events and not any(keyword in event_key[0] for keyword in ["Test", "M&G", "VIP"]):
                 unique_events.add(event_key)
                 print(artist, venue_name)
                 print("-------------")
@@ -74,7 +74,8 @@ def get_all_concerts():
     for concert in concerts:
         details = concert.display_concert_details()
         print(details)
-
+compile_concerts()
+get_all_concerts()
 
 
 
