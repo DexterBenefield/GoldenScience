@@ -38,12 +38,12 @@ def login_page():
 # Route to serve the registration page
 @app.route('/register', methods=['GET'])
 def register_page():
-    return render_template('register.html')  
+    return render_template('register')  
 
 # Route to handle form submissions
 @app.route('/register', methods=['POST'])
 def register_user():
-    data = request.form  # Get form data
+    data = request.form  # Get form datas
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
