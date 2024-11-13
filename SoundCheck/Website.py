@@ -52,7 +52,7 @@ def register_user():
         username=username,
         email=email,
         location=location,
-        password = password
+        password = password,
         first_name='',  # Set default values if needed
         last_name='',
         bio='',
