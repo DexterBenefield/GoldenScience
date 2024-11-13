@@ -1,0 +1,40 @@
+from flask import Flask
+from flaskK_sqlalchemy import flaskK_sqlalchemy
+from sqlalchemy import create_engine, Column, Integer, String, JSON, PickleType, Float, Date
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+
+app = Flack(__name__)
+#Configure the database URL: For Example, using SQLite
+app.config['SQLALCHEMY_DATABASE_URI']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = flaskK_sqlalchemy
+
+db = SQLAlchemy(app)
+
+#Defining model
+class User(db.model):
+    id = db.Column(db.integer, primary_key = True)
+    username = db.Column(db.String(80), unique = True, nullable = False)
+    email = db.Column(db.String(120), unique = True, nullable = False)
+    Rating_System = db.relationships('Rating_System', backref = 'author', lazy = True)
+
+    def __repr__(self):
+        return f'<User{self.username}>'
+
+class Rating_System(db.Model):
+    id = db.Column(db.integer, primart_key = True)
+    contnet = db.Column(db.Text, nullable = False)
+    user_id = db.Column(db.Interger, db.ForeignKey('user.id'), nullable = False)
+    rating = db.Column(db.interger, nullable = False) #Rating field
+
+    def __repr__(self):
+        return f'<Rating_System {self.content[:20]} Rating: {self.rating}>'
+
+
+with app.app_context():
+    db.create_all()
+
+if __name__ == '__main__':
+    app.run()
