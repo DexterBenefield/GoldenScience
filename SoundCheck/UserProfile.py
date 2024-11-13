@@ -27,12 +27,13 @@ class UserProfile(Base):
     upcoming_concerts = Column(PickleType)
     attended_concerts = Column(PickleType)
     reviews = Column(PickleType)
+    password = Column(String)
 
     def __init__(self, username, email, location, first_name=None, last_name=None, 
                  profile_pic=None, bio=None, social_links=None, 
                  favorite_genres=None, favorite_artists=None, 
                  upcoming_concerts=None, attended_concerts=None, 
-                 reviews=None, visibility="public"):
+                 reviews=None, visibility="public" , password=None):
         self.username = username
         self.email = email
         self.location = location
@@ -47,6 +48,7 @@ class UserProfile(Base):
         self.attended_concerts = attended_concerts if attended_concerts else []
         self.reviews = reviews if reviews else []
         self.visibility = visibility
+        self.password = password
 
     # Add user profile to the database
     def add_user_profile(self, session):
