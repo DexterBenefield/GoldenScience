@@ -38,7 +38,7 @@ def login_page():
 # Route to serve the registration page
 @app.route('/register', methods=['GET'])
 def register_page():
-    return render_template('register')  
+    return render_template('register.html')  
 
 # Route to handle form submissions
 @app.route('/register', methods=['POST'])
