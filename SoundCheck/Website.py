@@ -15,6 +15,15 @@ session = Session()
 
 @app.route("/")
 def home():
+    return render_template("index.html")
+
+# Route to serve the registration page
+@app.route('/login', methods=['GET'])
+def register_page():
+    return render_template('index.html')  # Make sure register.html is in the "templates" folder
+
+@app.route("/")
+def home():
     return render_template("register.html")
 
 # Route to serve the registration page
