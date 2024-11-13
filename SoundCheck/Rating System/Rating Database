@@ -1,40 +1,47 @@
-from flask import Flask
-from flaskK_sqlalchemy import flaskK_sqlalchemy
 from sqlalchemy import create_engine, Column, Integer, String, JSON, PickleType, Float, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 
-app = Flack(__name__)
-#Configure the database URL: For Example, using SQLite
-app.config['SQLALCHEMY_DATABASE_URI']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = flaskK_sqlalchemy
+Base = declarative_base()
 
-db = SQLAlchemy(app)
+# Define the User class
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
 
-#Defining model
-class User(db.model):
-    id = db.Column(db.integer, primary_key = True)
-    username = db.Column(db.String(80), unique = True, nullable = False)
-    email = db.Column(db.String(120), unique = True, nullable = False)
-    Rating_System = db.relationships('Rating_System', backref = 'author', lazy = True)
+    # Establish a relationship to the Rating class
+    ratings = relationship('Rating', back_populates='user')
 
-    def __repr__(self):
-        return f'<User{self.username}>'
+# Define the Rating class
+class Rating(Base):
+    __tablename__ = 'ratings'
+    id = Column(Integer, primary_key=True)
+    value = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'))
 
-class Rating_System(db.Model):
-    id = db.Column(db.integer, primart_key = True)
-    contnet = db.Column(db.Text, nullable = False)
-    user_id = db.Column(db.Interger, db.ForeignKey('user.id'), nullable = False)
-    rating = db.Column(db.interger, nullable = False) #Rating field
+    # Establish a relationship back to the User class
+    user = relationship('User', back_populates='ratings')
 
-    def __repr__(self):
-        return f'<Rating_System {self.content[:20]} Rating: {self.rating}>'
+# Set up the SQLite database
+engine = create_engine('sqlite:///:memory:')
+Base.metadata.create_all(engine)
 
+# Create a session
+Session = sessionmaker(bind=engine)
+session = Session()
 
-with app.app_context():
-    db.create_all()
+# Example usage: Add a user and a rating
+new_user = User(name='Alice')
+session.add(new_user)
+session.commit()
 
-if __name__ == '__main__':
-    app.run()
+new_rating = Rating(value=5, user_id=new_user.id)
+session.add(new_rating)
+session.commit()
+
+# Query the database
+for rating in session.query(Rating).all():
+    print(f'User {rating.user.name} gave a rating of {rating.value}')
