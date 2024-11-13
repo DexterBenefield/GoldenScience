@@ -41,3 +41,5 @@ class Review(Base):
             'Helpful Count': self.helpful_count,
             'Timestamp': self.timestamp
         }
+
+
