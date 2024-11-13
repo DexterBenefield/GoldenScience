@@ -18,9 +18,20 @@ def home():
     return render_template("index.html")
 
 # Route to serve the registration page
-@app.route('/login', methods=['GET'])
-def register_page():
-    return render_template('index.html')  # Make sure register.html is in the "templates" folder
+@app.route('/login', methods=['POST'])
+def login_page():
+    data = request.form
+    username = data.get('username')
+    password = data.get('password')
+
+    user = session.query(UserProfile).filter_by(username=username).first()
+    if user and user.password == password:  # Compare plain text passwords
+        # Password matches
+        return jsonify({"success": True, "message": "Login successful!"})
+    else:
+        # Incorrect username or password
+        return jsonify({"success": False, "message": "Invalid username or password."})
+
 
 @app.route("/")
 def home():
