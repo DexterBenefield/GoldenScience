@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Public Posts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='post_style.css') }}">
+</head>
+<body>
+
+<h1>Public Posts</h1>
+
+<div class="post-container">
+    {% for post in public_posts %}
+    <div class="post">
+        <p>{{ post.content }}</p>
+        <span class="timestamp">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
