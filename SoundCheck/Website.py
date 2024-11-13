@@ -19,20 +19,22 @@ def home():
     return render_template("index.html")
 
 # Route to serve the registration page
-@app.route('/login', methods=['POST'])
+@app.route('/', methods=['GET' , 'POST'])
 def login_page():
-    data = request.form
-    username = data.get('username')
-    password = data.get('password')
+    if request.method == ['POST']:
+        data = request.form
+        username = data.get('username')
+        password = data.get('password')
 
-    user = db_session.query(UserProfile).filter_by(username=username).first()
-    if user and user.password == password:  # Compare plain text passwords
-        session['username'] = user.username
-        # Password matches
-        return jsonify({"success": True, "message": "Login successful!"})
-    else:
-        # Incorrect username or password
-        return jsonify({"success": False, "message": "Invalid username or password."})
+        user = db_session.query(UserProfile).filter_by(username=username).first()
+        if user and user.password == password:  # Compare plain text passwords
+            session['username'] = user.username
+            # Password matches
+            return render_template('homepage.html')
+        else:
+            # Incorrect username or password
+            return jsonify({"success": False, "message": "Invalid username or password."})
+    return render_template('index.html')
 
 
 # Route to serve the registration page
@@ -112,6 +114,9 @@ def save_profile():
         return jsonify({"success": True, "message": "Profile created successfully!"})
     else:
         return jsonify({"success": False, "message": "User not found."})
+@app.route('/homepage', methods = ['GET'])
+def homepage():
+    return render_template('homepage.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
