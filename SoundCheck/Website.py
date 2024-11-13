@@ -33,10 +33,6 @@ def login_page():
         return jsonify({"success": False, "message": "Invalid username or password."})
 
 
-@app.route("/")
-def home():
-    return render_template("register.html")
-
 # Route to serve the registration page
 @app.route('/register', methods=['GET'])
 def register_page():
@@ -56,6 +52,7 @@ def register_user():
         username=username,
         email=email,
         location=location,
+        password = password
         first_name='',  # Set default values if needed
         last_name='',
         bio='',
