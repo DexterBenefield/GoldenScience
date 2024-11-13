@@ -27,7 +27,7 @@ def login_page():
     user = session.query(UserProfile).filter_by(username=username).first()
     if user and user.password == password:  # Compare plain text passwords
         # Password matches
-        return jsonify({"success": True, "message": "Login successful!"})
+        return render_template('homepage.html')
     else:
         # Incorrect username or password
         return jsonify({"success": False, "message": "Invalid username or password."})
