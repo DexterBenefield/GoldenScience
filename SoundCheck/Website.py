@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,9 +14,7 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 db_session = Session()
 
-@app.route("/")
-def home():
-    return render_template("index.html")
+
 
 # Route to serve the registration page
 @app.route('/', methods=['GET' , 'POST'])
@@ -25,16 +23,18 @@ def login_page():
         data = request.form
         username = data.get('username')
         password = data.get('password')
-
+        
         user = db_session.query(UserProfile).filter_by(username=username).first()
         if user and user.password == password:  # Compare plain text passwords
             session['username'] = user.username
-            # Password matches
+            flash("success! Login complete. ")
             return render_template('homepage.html')
         else:
             # Incorrect username or password
-            return jsonify({"success": False, "message": "Invalid username or password."})
+            flash("incorrect Username or password. ") 
     return render_template('index.html')
+    
+    
 
 
 # Route to serve the registration page
