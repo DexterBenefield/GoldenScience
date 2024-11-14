@@ -1,12 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Flexbox for positioning */
+        .container {
+            display: flex;
+            justify-content: flex-start; /* Aligns to the left */
+            align-items: flex-start;     /* Aligns to the top */
+            height: 100vh;               /* Full height of the viewport */
+        }
+
+        button {
+            padding: 10px;
+            background-color: black;
+            color: White;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            justify-self: left;
+        }
+    </style>
 </head>
 <body>
     <header> Hi, welcome to SoundCheck!</header>
+    
+        <div class="container">
+            <form action = "/logout" method = 'POST'></form>
+                <button type = 'submit'>Log Out</button>
+            </form>
+        </div>
 </body>
 </html>

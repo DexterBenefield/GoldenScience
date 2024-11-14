@@ -19,19 +19,19 @@ db_session = Session()
 # Route to serve the registration page
 @app.route('/', methods=['GET' , 'POST'])
 def login_page():
-    if request.method == ['POST']:
-        data = request.form
-        username = data.get('username')
-        password = data.get('password')
-        
-        user = db_session.query(UserProfile).filter_by(username=username).first()
-        if user and user.password == password:  # Compare plain text passwords
-            session['username'] = user.username
-            flash("success! Login complete. ")
-            return render_template('homepage.html')
-        else:
-            # Incorrect username or password
-            flash("incorrect Username or password. ") 
+    if request.method == 'POST':
+        return render_template('homepage.html')#delete when reintegrating
+        # data = request.form
+        # username = data.get('username')
+        # password = data.get('password')
+        # user = db_session.query(UserProfile).filter_by(username=username).first()
+        # if user and user.password == password:  # Compare plain text passwords
+        #     session['username'] = user.username
+        #     flash("success! Login complete. ")
+        #     return render_template('homepage.html')
+        # else:
+        #     # Incorrect username or password
+        #     flash("incorrect Username or password. ") 
     return render_template('index.html')
     
     
@@ -67,7 +67,7 @@ def register_user():
     # Add the user to the database
     try:
         new_user.add_user_profile(db_session)
-        return redirect(url_for('create_profile_page'))
+        return redirect(url_for('homepage'))
     except IntegrityError:
         db_session.rollback()
         return jsonify({"success": False, "message": "Username or email already exists."})
