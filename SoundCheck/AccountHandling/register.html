@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Register Page</title>
 
-    <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Register.css') }}">
 
 </head>
 <body>
     <div class="glass-container">
         <div class="Register-box">
             <h2>Register</h2>
-            <form action="#" method="POST">
+            
+            <form method="POST" action="/register">
 
-                <input type="text" id="Email" name="Email" required placeholder="Email">
+                <input type="email" id="email" name="email" required placeholder="Email">
 
                 <input type="text" id="username" name="username" required placeholder="Username">
                 
                 <input type="password" id="password" name="password" required placeholder="Password">
                 
                 <div class="options">
-                    <a href="#">Already have an account? CLick Here</a>
+                    <a href="/">Already have an account? Cick Here</a>
                 </div>
                 
                 <button type="submit">Register</button>
 
-                <p>Don't have an account? <a href="Register.html" id="register">Signup</a></p>
             </form>
         </div>
     </div>

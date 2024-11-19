@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from UserProfile import UserProfile  # Import your UserProfile class
 from Concert import Concert
 from Concert import engine
-app = Flask(__name__)
+app = Flask(__name__,template_folder='AccountHandling')
 app.secret_key = 'your_secret_key'  # Needed for flash messages
 Session = sessionmaker(bind=engine)  # Set up your database session
 
