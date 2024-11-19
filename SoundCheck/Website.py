@@ -6,7 +6,9 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 
-app = Flask(__name__,template_folder='AccountHandling')
+app = Flask(__name__,template_folder='AccountHandling',static_folder = 'static')
+app.secret_key = os.urandom(24)
+
 
 # Database setup
 engine = create_engine('sqlite:///app.db')
@@ -20,7 +22,7 @@ db_session = Session()
 @app.route('/', methods=['GET' , 'POST'])
 def login_page():
     if request.method == 'POST':
-        return render_template('homepage.html')#delete when reintegrating
+        return redirect(url_for('homepage'))#delete when reintegrating
         # data = request.form
         # username = data.get('username')
         # password = data.get('password')
@@ -117,6 +119,10 @@ def save_profile():
 @app.route('/homepage', methods = ['GET'])
 def homepage():
     return render_template('homepage.html')
+@app.route('/logout', methods = ['POST'])
+def logout():
+    session.clear()
+    return redirect(url_for('login_page'))
 
 if __name__ == '__main__':
     app.run(debug=True)

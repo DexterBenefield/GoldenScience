@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        /* Flexbox for positioning */
-        .container {
-            display: flex;
-            justify-content: flex-start; /* Aligns to the left */
-            align-items: flex-start;     /* Aligns to the top */
-            height: 100vh;               /* Full height of the viewport */
-        }
-
-        button {
-            padding: 10px;
-            background-color: black;
-            color: White;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            justify-self: left;
-        }
-    </style>
+    <title>My Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='homepage.css') }}">
 </head>
 <body>
-    <header> Hi, welcome to SoundCheck!</header>
-    
-        <div class="container">
-            <form action = "/logout" method = 'POST'></form>
-                <button type = 'submit'>Log Out</button>
-            </form>
-        </div>
+    <header class="site-header">
+        <h1>Welcome to My Website</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/account">Account</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        <section id="services">
+            <h2>Find a Concert</h2>
+            <p>Looking For an Event?</p>
+            <button class="cta-button">Find Now!</button>
+        </section>
+
+        <section id="contact">
+            <h2>Rating</h2>
+            <p>Tell us how you feel about your last concert!</p>
+            <button class="cta-button">Rate Now!</button>
+        </section>
+    </main>
+
+
 </body>
 </html>
