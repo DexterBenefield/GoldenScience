@@ -8,23 +8,26 @@
 </head>
 <body>
     <header class="site-header">
-        <h1>Welcome to My Website</h1>
+        <h1>Welcome to SoundCheck!</h1>
         <nav>
             <ul class="nav-links">
                 <li><a href="/account">Account</a></li>
                 <li><a href="/logout">Log Out</a></li>
+                
             </ul>
         </nav>
     </header>
 
-    <main class="content">
-        <section id="services">
+    <main class="glass-container">
+        <section>
             <h2>Find a Concert</h2>
             <p>Looking For an Event?</p>
-            <button class="cta-button">Find Now!</button>
+            <form action="{{ url_for('concerts') }}" method="get">
+                <button class="cta-button" type="submit">Find Now!</button>
+            </form>
         </section>
 
-        <section id="contact">
+        <section>
             <h2>Rating</h2>
             <p>Tell us how you feel about your last concert!</p>
             <button class="cta-button">Rate Now!</button>

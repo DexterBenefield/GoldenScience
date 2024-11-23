@@ -21,7 +21,7 @@ def distanceFromMe(lat1, lon1, lat2, lon2):
     # Distance in miles
     distance = radius * c
     return distance
-def compile_concerts():
+def compileConcerts():
 
 
     url = 'https://app.ticketmaster.com/discovery/v2/events.json'
@@ -29,7 +29,7 @@ def compile_concerts():
 
     api_key = 'GWiMxKfIqtPFeOYwdlQnGIYzTVVOeqgz'
       
-    userCity = str(input("What city are you in?"))
+    userCity = "Atlanta"
 
     params = {
         'apikey': api_key,
@@ -63,19 +63,15 @@ def compile_concerts():
 
             if event_key not in unique_events and not any(keyword in event_key[0] for keyword in ["Test", "M&G", "VIP"]):
                 unique_events.add(event_key)
-                print(artist, venue_name)
-                print("-------------")
-                print(venue_address, event_date)
-                print("")
                 concert = Concert(artist,venue_name,event_date)
                 concert.add_concert(session)
-def get_all_concerts():
+def getAllConcerts():
     concerts = session.query(Concert).all()
     for concert in concerts:
         details = concert.display_concert_details()
-        print(details)
-compile_concerts()
-get_all_concerts()
+        return details
+compileConcerts()
+getAllConcerts()
 
 
 

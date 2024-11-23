@@ -5,7 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
-
+from Concert import Concert 
+from ConcertFinder import compileConcerts,distanceFromMe,getAllConcerts
 app = Flask(__name__,template_folder='AccountHandling',static_folder = 'static')
 app.secret_key = os.urandom(24)
 
@@ -118,11 +119,19 @@ def save_profile():
         return jsonify({"success": False, "message": "User not found."})
 @app.route('/homepage', methods = ['GET'])
 def homepage():
+    
     return render_template('homepage.html')
-@app.route('/logout', methods = ['POST'])
+
+@app.route('/logout', methods = ['GET'])
 def logout():
     session.clear()
     return redirect(url_for('login_page'))
 
+@app.route('/concerts' , methods = ['GET',"POST"])
+def concerts():
+    compileConcerts()
+    concerts = getAllConcerts()
+    
+    return render_template('concertFinder.html', concerts = concerts)
 if __name__ == '__main__':
     app.run(debug=True)

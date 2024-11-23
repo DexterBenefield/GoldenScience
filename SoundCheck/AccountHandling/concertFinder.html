@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='homepage.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <h1>SoundCheck</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/homepage">Home</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        <section id="services">
+            <h2>Concerts near me</h2>
+            <ul>
+                {% for concert in concerts %}
+                    <li>
+                        <strong>Artist:</strong> {{ concert.artist_name }}<br>
+                        <strong>Venue:</strong> {{ concert.venue }}<br>
+                        <strong>Date:</strong> {{ concert.date }}<br>
+                        <strong>Overall Rating:</strong> {{ concert.overall_rating or "No Overall Rating Yet!" }}<br>
+                        <strong>Review:</strong> {{ concert.review or "No Reviews Yet!" }}<br>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+
+
+</body>
+</html>
