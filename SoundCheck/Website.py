@@ -5,8 +5,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
+from Concert import Concert 
+from ConcertFinder import compileConcerts,distanceFromMe
+app = Flask(__name__,template_folder='AccountHandling',static_folder = 'static')
+app.secret_key = os.urandom(24)
 
-app = Flask(__name__,template_folder='AccountHandling')
 
 # Database setup
 engine = create_engine('sqlite:///app.db')
@@ -20,7 +23,7 @@ db_session = Session()
 @app.route('/', methods=['GET' , 'POST'])
 def login_page():
     if request.method == 'POST':
-        return render_template('homepage.html')#delete when reintegrating
+        return redirect(url_for('homepage'))#delete when reintegrating
         # data = request.form
         # username = data.get('username')
         # password = data.get('password')
@@ -116,7 +119,17 @@ def save_profile():
         return jsonify({"success": False, "message": "User not found."})
 @app.route('/homepage', methods = ['GET'])
 def homepage():
+    
     return render_template('homepage.html')
 
+@app.route('/logout', methods = ['GET'])
+def logout():
+    session.clear()
+    return redirect(url_for('login_page'))
+
+@app.route('/concerts' , methods = ['GET',"POST"])
+def concerts():
+    concerts = compileConcerts()
+    return render_template('concertFinder.html', concerts = concerts)
 if __name__ == '__main__':
     app.run(debug=True)

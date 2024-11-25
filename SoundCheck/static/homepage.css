@@ -1,0 +1,160 @@
+body, h1, h2, p, ul, li, a, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-image: url('background-image.jpeg');
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    padding: 0 20px;
+    
+}
+.glass-container {
+    margin: 10px;
+    width: 300px;
+    height: 350px;
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 2px solid #444444;
+}
+.glass-container1 {
+    width: 500px;
+    height: fit-content;
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
+    border-radius: 10px;
+    border: 1px solid #444444;
+    padding: 10px;
+    margin: 5px;
+}
+.glass-container::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: -1;
+}
+.site-header {
+    background-color: goldenrod;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    justify-self: center;
+}
+
+.site-header h1 {
+    margin-bottom: 10px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content */
+.content {
+    border:rgba(255, 255, 255, 0.1);
+    max-width: 2300px;
+    margin: 20px auto;
+    max-height: 700px;
+}
+
+.content section {
+    margin-bottom: 30px;
+
+}
+
+h2 {
+    color: #444444;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: goldenrod;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cta-button:hover {
+    background-color: #444444;
+}
+
+.scrolling-list {
+    margin-top: 10px;
+    justify-content: center;
+    width: 530px;  /* Set a fixed width */
+    height: 700px; /* Set a fixed height */
+    overflow-y: scroll;  /* Adds vertical scroll */
+    border-radius: 15px;
+    border: 1px solid #444444; /* Optional: Adds border for visibility */
+    padding: 10px;
+    background-color: rgba(121, 121, 121, 0.6);
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 8px;
+    border-bottom: 1px; /* Adds a divider between items */
+}
+
+/* Custom scrollbar styles for Webkit browsers (Chrome, Safari, Edge) */
+.scrolling-list::-webkit-scrollbar {
+    width: 20px; /* Set the width of the scrollbar */
+}
+
+
+
+.scrolling-list::-webkit-scrollbar-thumb {
+    background: transparent; /* Color of the scrollbar thumb */
+    border-radius: 7px; /* Rounded corners */
+}
+
+.scrolling-list::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker thumb color when hovered */
+}
+.large-text {
+    font-size: 30px;
+}
+
+.small-text {
+    font-size: 10px;
+}
