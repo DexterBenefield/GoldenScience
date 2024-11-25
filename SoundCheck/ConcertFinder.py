@@ -29,12 +29,12 @@ def compileConcerts():
 
     api_key = 'GWiMxKfIqtPFeOYwdlQnGIYzTVVOeqgz'
       
-    userCity = "Atlanta"
+    userCity = "atlanta"
 
     params = {
         'apikey': api_key,
         'keyword': 'concert',
-        'city': userCity,
+        'city': 'atlanta',
         'countryCode': 'US',
         'size': 100
     }
@@ -59,19 +59,15 @@ def compileConcerts():
             venue_address = venue.get('address').get('line1','N/A')
             event_date = event.get('dates').get('start').get('localDate')
             
-            event_key = (artist, venue_name, venue_address)
+            event_key = (artist, venue_name, event_date)
 
             if event_key not in unique_events and not any(keyword in event_key[0] for keyword in ["Test", "M&G", "VIP"]):
                 unique_events.add(event_key)
                 concert = Concert(artist,venue_name,event_date)
                 concert.add_concert(session)
-def getAllConcerts():
-    concerts = session.query(Concert).all()
-    for concert in concerts:
-        details = concert.display_concert_details()
-        return details
-compileConcerts()
-getAllConcerts()
+                yield event_key
+
+
 
 
 

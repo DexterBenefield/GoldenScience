@@ -18,19 +18,27 @@
     </header>
 
     <main class="content">
-        <section id="services">
+        <section class = 'scrolling-list'>
             <h2>Concerts near me</h2>
+
+            {% if Artist != '' %}
             <ul>
                 {% for concert in concerts %}
-                    <li>
-                        <strong>Artist:</strong> {{ concert.artist_name }}<br>
-                        <strong>Venue:</strong> {{ concert.venue }}<br>
-                        <strong>Date:</strong> {{ concert.date }}<br>
-                        <strong>Overall Rating:</strong> {{ concert.overall_rating or "No Overall Rating Yet!" }}<br>
-                        <strong>Review:</strong> {{ concert.review or "No Reviews Yet!" }}<br>
-                    </li>
+                        <li class="glass-container1">
+                            <strong>Artist:</strong> {{ concert[0] }}<br>
+                            <strong>Venue:</strong> {{ concert[1] }}<br>
+                            <strong>Date:</strong> {{ concert[2] }}<br>
+                            <strong>Overall Rating:</strong> {{ concert.overall_rating or "No Overall Rating Yet!" }}<br>
+                            <strong>Review:</strong> {{ concert.review or "No Reviews Yet!" }}<br>
+                            <a class='cta-button',href="/rate">Leave a Rating!</a>
+                        </li>
                 {% endfor %}
             </ul>
+            {% else %}
+                <p>No concerts available at the moment.</p>
+            {% endif %}
+
+                
         </section>
     </main>
 

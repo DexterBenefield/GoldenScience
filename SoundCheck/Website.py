@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 from Concert import Concert 
-from ConcertFinder import compileConcerts,distanceFromMe,getAllConcerts
+from ConcertFinder import compileConcerts,distanceFromMe
 app = Flask(__name__,template_folder='AccountHandling',static_folder = 'static')
 app.secret_key = os.urandom(24)
 
@@ -129,9 +129,7 @@ def logout():
 
 @app.route('/concerts' , methods = ['GET',"POST"])
 def concerts():
-    compileConcerts()
-    concerts = getAllConcerts()
-    
+    concerts = compileConcerts()
     return render_template('concertFinder.html', concerts = concerts)
 if __name__ == '__main__':
     app.run(debug=True)

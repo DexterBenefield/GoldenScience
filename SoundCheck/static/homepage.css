@@ -17,6 +17,7 @@ body {
     
 }
 .glass-container {
+    margin: 10px;
     width: 300px;
     height: 350px;
     position: relative;
@@ -27,14 +28,16 @@ body {
     border: 2px solid #444444;
 }
 .glass-container1 {
-    width: 300px;
-    height: 250px;
+    width: 500px;
+    height: fit-content;
     position: relative;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
     border-radius: 10px;
-    border: 2px solid #444444;
+    border: 1px solid #444444;
+    padding: 10px;
+    margin: 5px;
 }
 .glass-container::before {
     content: '';
@@ -47,11 +50,11 @@ body {
     z-index: -1;
 }
 .site-header {
-    background-color: #000;
+    background-color: goldenrod;
     color: white;
     padding: 20px;
     text-align: center;
-    width: fit-content;
+    width: 100%;
     justify-self: center;
 }
 
@@ -78,16 +81,19 @@ body {
 
 /* Main Content */
 .content {
-    max-width: 800px;
+    border:rgba(255, 255, 255, 0.1);
+    max-width: 2300px;
     margin: 20px auto;
+    max-height: 700px;
 }
 
 .content section {
     margin-bottom: 30px;
+
 }
 
 h2 {
-    color: #007bff;
+    color: #444444;
     margin-bottom: 10px;
 }
 
@@ -95,7 +101,7 @@ h2 {
 .cta-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: goldenrod;
     color: white;
     border: none;
     border-radius: 5px;
@@ -104,6 +110,51 @@ h2 {
 }
 
 .cta-button:hover {
-    background-color: #0056b3;
+    background-color: #444444;
 }
 
+.scrolling-list {
+    margin-top: 10px;
+    justify-content: center;
+    width: 530px;  /* Set a fixed width */
+    height: 700px; /* Set a fixed height */
+    overflow-y: scroll;  /* Adds vertical scroll */
+    border-radius: 15px;
+    border: 1px solid #444444; /* Optional: Adds border for visibility */
+    padding: 10px;
+    background-color: rgba(121, 121, 121, 0.6);
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 8px;
+    border-bottom: 1px; /* Adds a divider between items */
+}
+
+/* Custom scrollbar styles for Webkit browsers (Chrome, Safari, Edge) */
+.scrolling-list::-webkit-scrollbar {
+    width: 20px; /* Set the width of the scrollbar */
+}
+
+
+
+.scrolling-list::-webkit-scrollbar-thumb {
+    background: transparent; /* Color of the scrollbar thumb */
+    border-radius: 7px; /* Rounded corners */
+}
+
+.scrolling-list::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker thumb color when hovered */
+}
+.large-text {
+    font-size: 30px;
+}
+
+.small-text {
+    font-size: 10px;
+}
