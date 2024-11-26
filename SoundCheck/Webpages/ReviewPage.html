@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Input Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0 1rem;
+        }
+
+        .Rating_System {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .Rating_System h1 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #1a1a1a;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #333;
+        }
+
+        .rating-group {
+            margin-bottom: 1rem;
+        }
+
+        .rating-group label {
+            margin-right: 1rem;
+        }
+
+        .average-rating {
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+    </style>
+    <script>
+        function calculateAverageRating() {
+            const ratings = document.querySelectorAll('select');
+            let total = 0;
+            ratings.forEach(rating => {
+                total += parseInt(rating.value);
+            });
+            const average = (total / ratings.length).toFixed(1);
+            document.getElementById('average-rating').textContent = `Average Rating: ${average} Stars`;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Review Entry Page</h1>
+    </header>
+    <main>
+        <div class="Rating_System">
+            <h1>Write a Review</h1>
+            <form action="/submit-review" method="POST" oninput="calculateAverageRating()">
+                <div class="form-group">
+                    <label for="review">Your Review</label>
+                    <textarea id="review" name="review" rows="6" placeholder="Write your review here..."></textarea>
+                </div>
+                
+                <h2>Rate the Following:</h2>
+                <div class="rating-group">
+                    <label for="location">Location</label>
+                    <select id="location" name="location">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                
+                <div class="rating-group">
+                    <label for="parking">Parking</label>
+                    <select id="parking" name="parking">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div class="rating-group">
+                    <label for="merch">Merch</label>
+                    <select id="merch" name="merch">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div class="rating-group">
+                    <label for="sound-quality">Sound Quality</label>
+                    <select id="sound-quality" name="sound_quality">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div class="rating-group">
+                    <label for="set-list">Set List</label>
+                    <select id="set-list" name="set_list">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div class="rating-group">
+                    <label for="ticket-price">Ticket Price</label>
+                    <select id="ticket-price" name="ticket_price">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div class="rating-group">
+                    <label for="facilities">Facilities</label>
+                    <select id="facilities" name="facilities">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div class="rating-group">
+                    <label for="security">Security</label>
+                    <select id="security" name="security">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div class="average-rating" id="average-rating">Average Rating: 0 Stars</div>
+
+                <div class="form-group">
+                    <input type="submit" value="Submit Review">
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
