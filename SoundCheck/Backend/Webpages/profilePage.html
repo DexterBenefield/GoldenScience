@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <h1>{{ user.username }}'s Profile</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/posts">My Posts</a></li>
+                <li><a href="/reviews">My Reviews</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="glass-container">
+        <section class="profile-details">
+            <h2>Profile Details</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Joined on:</strong> {{ user.join_date.strftime('%Y-%m-%d') }}</p>
+        </section>
+
+        <section class="quick-actions">
+            <h2>Quick Actions</h2>
+            <a href="/create_post"><button class="cta-button">Create a Post</button></a>
+            <a href="/reviews"><button class="cta-button">Write a Review</button></a>
+        </section>
+    </main>
+</body>
+</html>
