@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 from Concert import Concert 
 from ConcertFinder import compileConcerts,distanceFromMe
-app = Flask(__name__,template_folder='AccountHandling',static_folder = 'static')
+app = Flask(__name__,template_folder='Webpages',static_folder = 'static')
 app.secret_key = os.urandom(24)
 
 
