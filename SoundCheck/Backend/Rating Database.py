@@ -13,17 +13,17 @@ class User(Base):
     name = Column(String, nullable=False)
 
     # Establish a relationship to the Rating class
-    ratings = relationship('Rating', back_populates='user')
+    #ratings = relationship('Rating', back_populates='user')
 
 # Define the Rating class
 class Rating(Base):
     __tablename__ = 'ratings'
     id = Column(Integer, primary_key=True)
     value = Column(Integer, nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ('users.id')) #ForeignKey
 
     # Establish a relationship back to the User class
-    user = relationship('User', back_populates='ratings')
+    #user = #relationship('User', back_populates='ratings')
 
 # Set up the SQLite database
 engine = create_engine('sqlite:///:memory:')
