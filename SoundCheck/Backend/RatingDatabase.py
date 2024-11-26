@@ -1,6 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, JSON, PickleType, Float, Date
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Column, Integer, String, JSON, PickleType, Float, Date, ForeignKey
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 
@@ -13,17 +12,17 @@ class User(Base):
     name = Column(String, nullable=False)
 
     # Establish a relationship to the Rating class
-    #ratings = relationship('Rating', back_populates='user')
+    ratings = relationship('Rating', back_populates='user')
 
 # Define the Rating class
 class Rating(Base):
     __tablename__ = 'ratings'
     id = Column(Integer, primary_key=True)
     value = Column(Integer, nullable=False)
-    user_id = Column(Integer, ('users.id')) #ForeignKey
+    user_id = Column(Integer, ForeignKey('users.id')) #
 
     # Establish a relationship back to the User class
-    #user = #relationship('User', back_populates='ratings')
+    user = relationship('User', back_populates='ratings')
 
 # Set up the SQLite database
 engine = create_engine('sqlite:///:memory:')
