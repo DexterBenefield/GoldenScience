@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concert Reviews</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <h1>Concert Reviews</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/profile">My Profile</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="glass-container">
+        <section class="public-reviews">
+            <h2>Read Reviews</h2>
+            <div class="review-container">
+                {% if public_reviews %}
+                    {% for review in public_reviews %}
+                        <div class="review">
+                            <h3>{{ review.concert_name }}</h3>
+                            <p><strong>Reviewed by:</strong> {{ review.username }}</p>
+                            <p><strong>Rating:</strong> {{ review.rating }} / 5</p>
+                            <p>{{ review.comment }}</p>
+                            <span class="timestamp">Reviewed on: {{ review.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No reviews available yet. Be the first to share your thoughts!</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>
