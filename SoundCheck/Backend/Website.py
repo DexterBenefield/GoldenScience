@@ -80,42 +80,36 @@ def create_profile_page():
 @app.route('/save-profile', methods=['POST'])
 def save_profile():
     if 'username' not in session:
-        return redirect(url_for('homepage'))
+        return redirect(url_for('login_page'))  # Redirect to the login page if not logged in
 
     data = request.form
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    bio = data.get('bio')
-    location = data.get('location')
-    favorite_artists = data.get('favorite_artists')
-    favorite_genres = data.get('favorite_genres')
+    username = session['username']  # Get the logged-in username
 
-    user = db_session.query(UserProfile).filter_by(username=session['username']).first()
-
-    # Handle profile picture upload
-    profile_pic = request.files.get('profile_pic')
-    if profile_pic:
-        upload_folder = os.path.join('static', 'uploads')
-        os.makedirs(upload_folder, exist_ok=True)
-        profile_pic_path = os.path.join(upload_folder, profile_pic.filename)
-        profile_pic.save(profile_pic_path)
-    else:
-        profile_pic_path = None
+    user = db_session.query(UserProfile).filter_by(username=username).first()
 
     if user:
-        user.first_name = first_name
-        user.last_name = last_name
-        user.bio = bio
-        user.location = location
-        user.profile_pic = profile_pic_path
-        user.favorite_artists = favorite_artists.split(', ')
-        user.favorite_genres = favorite_genres.split(', ')
+        # Update user profile
+        user.first_name = data.get('first_name')
+        user.last_name = data.get('last_name')
+        user.bio = data.get('bio')
+        user.location = data.get('location')
+        user.favorite_artists = data.get('favorite_artists', '')
+        user.favorite_genres = data.get('favorite_genres', '')
+
+        # Handle profile picture upload
+        profile_pic = request.files.get('profile_pic')
+        if profile_pic:
+            upload_folder = os.path.join('static', 'uploads')
+            os.makedirs(upload_folder, exist_ok=True)
+            profile_pic_path = os.path.join(upload_folder, profile_pic.filename)
+            profile_pic.save(profile_pic_path)
+            user.profile_pic = profile_pic_path
 
         db_session.commit()
-        
-        return redirect(url_for('homepage'))
+        return redirect(url_for('homepage'))  # Redirect to homepage after saving profile
     else:
-        return jsonify({"success": False, "message": "User not found."})
+        flash("User not found.")
+        return redirect(url_for('create_profile_page'))
     
 @app.route('/homepage', methods = ['GET'])
 def homepage():
