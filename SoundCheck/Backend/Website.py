@@ -127,6 +127,10 @@ def save_profile():
 def homepage():
     return render_template('homepage.html')
 
+#@app.route('/reviews', methods = ['GET'])
+#def reviews():
+#    return render_template('reviews.html')
+
 @app.route('/concerts' , methods=['GET', 'POST'])
 def Concerts():
     concerts = compileConcerts()
