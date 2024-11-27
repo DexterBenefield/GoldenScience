@@ -5,8 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
-import Concert
 from ConcertFinder import compileConcerts
+from UserProfile import UserProfile
 app = Flask(__name__,template_folder='Webpages')
 
 app.secret_key = 'your_unique_secret_key'
@@ -131,7 +131,20 @@ def homepage():
 def Concerts():
     concerts = compileConcerts()
     return render_template('concertFinder.html', concerts = concerts)
+@app.route('/account' , methods = ['GET','POST'])
+def account():
+    user_id = session.get('user_id')
+    if user_id:
+        user = user_id.display_profile()
+    else:
+        user = None
 
+    # Pass user data to the template
+    return render_template('profilePage.html', user=user)
+
+@app.route('/userposts', methods = ['GET','POST'])
+def individualposts():
+    return render_template('individualposts.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
