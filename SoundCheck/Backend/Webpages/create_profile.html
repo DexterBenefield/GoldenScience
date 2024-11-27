@@ -3,7 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CreateProfile Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Complete Your Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='createprofile.css') }}">
 </head>
 <body>
+    <div class="container">
+        <div class="header-box">
+            <header>
+                <h1>Complete Your Profile</h1>
+                <p>Tell Us About You!</p>
+            </header>
+        </div>
+
+        <div class="info-box">
+            <main>
+                <form action="/save-profile" method="POST" enctype="multipart/form-data">
+                    <label for="profile-pic">Profile Picture:</label>
+                    <input type="file" id="profile-pic" name="profile-pic" accept="image/*"><br>
+
+                    <label for="bio">Bio:</label>
+                    <textarea id="bio" name="bio" placeholder="Tell us about yourself..."></textarea><br>
+
+                    <label for="music-genre">Favorite Music Genre:</label>
+                    <input type="text" id="music-genre" name="music-genre" placeholder="E.g., Rock, Pop, Jazz"><br>
+
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" placeholder="Where are you from?"><br>
+
+                    <button type="submit">Save Profile</button>
+                </form>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
