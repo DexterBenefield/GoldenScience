@@ -5,11 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
-from Concert import Concert 
-from ConcertFinder import compileConcerts,distanceFromMe
-app = Flask(__name__,template_folder="Webpages" ,static_folder = 'static')
-app.secret_key = os.urandom(24)
 
+app = Flask(__name__,template_folder='AccountHandling')
 
 # Database setup
 engine = create_engine('sqlite:///app.db')
@@ -23,7 +20,7 @@ db_session = Session()
 @app.route('/', methods=['GET' , 'POST'])
 def login_page():
     if request.method == 'POST':
-        return redirect(url_for('homepage'))#delete when reintegrating
+        return render_template('homepage.html')#delete when reintegrating
         # data = request.form
         # username = data.get('username')
         # password = data.get('password')
@@ -70,10 +67,11 @@ def register_user():
     # Add the user to the database
     try:
         new_user.add_user_profile(db_session)
-        return redirect(url_for('homepage'))
+        return redirect(url_for('create_profile_page'))  # Redirect to create profile
     except IntegrityError:
         db_session.rollback()
         return jsonify({"success": False, "message": "Username or email already exists."})
+
     
 @app.route('/create-profile', methods = ['GET'])
 def create_profile_page():
@@ -82,7 +80,7 @@ def create_profile_page():
 @app.route('/save-profile', methods=['POST'])
 def save_profile():
     if 'username' not in session:
-        return jsonify({"success": False, "message": "User not logged in."})
+        return redirect(url_for('index.html'))
 
     data = request.form
     first_name = data.get('first_name')
@@ -91,6 +89,8 @@ def save_profile():
     location = data.get('location')
     favorite_artists = data.get('favorite_artists')
     favorite_genres = data.get('favorite_genres')
+
+    user = db_session.query(UserProfile).filter_by(username=session['username']).first()
 
     # Handle profile picture upload
     profile_pic = request.files.get('profile_pic')
@@ -102,8 +102,6 @@ def save_profile():
     else:
         profile_pic_path = None
 
-    # Example: Retrieve the user from the database (replace 'example_user' with dynamic logic)
-    user = db_session.query(UserProfile).filter_by(username='example_user').first()
     if user:
         user.first_name = first_name
         user.last_name = last_name
@@ -114,22 +112,14 @@ def save_profile():
         user.favorite_genres = favorite_genres.split(', ')
 
         db_session.commit()
-        return jsonify({"success": True, "message": "Profile created successfully!"})
+        
+        return redirect(url_for('homepage'))
     else:
         return jsonify({"success": False, "message": "User not found."})
+    
 @app.route('/homepage', methods = ['GET'])
 def homepage():
-    
     return render_template('homepage.html')
 
-@app.route('/logout', methods = ['GET'])
-def logout():
-    session.clear()
-    return redirect(url_for('login_page'))
-
-@app.route('/concerts' , methods = ['GET',"POST"])
-def concerts():
-    concerts = compileConcerts()
-    return render_template('concertFinder.html', concerts = concerts)
 if __name__ == '__main__':
     app.run(debug=True)
