@@ -5,8 +5,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
-
+import Concert
+from ConcertFinder import compileConcerts
 app = Flask(__name__,template_folder='Webpages')
+
+app.secret_key = 'your_unique_secret_key'
 
 # Database setup
 engine = create_engine('sqlite:///app.db')
@@ -20,21 +23,30 @@ db_session = Session()
 @app.route('/', methods=['GET' , 'POST'])
 def login_page():
     if request.method == 'POST':
-        return render_template('homepage.html')#delete when reintegrating
-        # data = request.form
-        # username = data.get('username')
-        # password = data.get('password')
-        # user = db_session.query(UserProfile).filter_by(username=username).first()
-        # if user and user.password == password:  # Compare plain text passwords
-        #     session['username'] = user.username
-        #     flash("success! Login complete. ")
-        #     return render_template('homepage.html')
-        # else:
-        #     # Incorrect username or password
-        #     flash("incorrect Username or password. ") 
+        data = request.form
+        username = data.get('username')
+        password = data.get('password')
+        
+        # Fetch the user from the database
+        user = db_session.query(UserProfile).filter_by(username=username).first()
+        
+        if user and user.password == password:  # Validate password
+            session['username'] = user.username  # Set username in session
+            flash("Success! Login complete.")
+            return redirect(url_for('homepage'))  # Redirect to the homepage
+        else:
+            # Incorrect username or password
+            flash("Incorrect username or password.")
+    
+    # Render login page for GET requests or after a failed login
     return render_template('index.html')
     
-    
+@app.route('/logout', methods = [ 'GET'])
+def logout():
+    session.clear()
+    flash("Logged Out Succesfull!")
+    return redirect(url_for('login_page'))
+
 
 
 # Route to serve the registration page
@@ -115,9 +127,17 @@ def save_profile():
 def homepage():
     return render_template('homepage.html')
 
+<<<<<<< HEAD
 #@app.route('/rating', methods=['GET'])
 #def rating_page():
 #   return render_template('reveiws.html')
+=======
+@app.route('/concerts' , methods=['GET', 'POST'])
+def Concerts():
+    concerts = compileConcerts()
+    return render_template('concertFinder.html', concerts = concerts)
+
+>>>>>>> 5b953a9f9fe264679edb0123b75ff78ba937594d
 
 if __name__ == '__main__':
     app.run(debug=True)
