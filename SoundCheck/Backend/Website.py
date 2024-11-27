@@ -40,7 +40,12 @@ def login_page():
     # Render login page for GET requests or after a failed login
     return render_template('index.html')
     
-    
+@app.route('/logout', methods = [ 'GET'])
+def logout():
+    session.clear()
+    flash("Logged Out Succesfull!")
+    return redirect(url_for('login_page'))
+
 
 
 # Route to serve the registration page
