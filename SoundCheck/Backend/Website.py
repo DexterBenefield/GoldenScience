@@ -80,7 +80,7 @@ def create_profile_page():
 @app.route('/save-profile', methods=['POST'])
 def save_profile():
     if 'username' not in session:
-        return redirect(url_for('login_page'))
+        return redirect(url_for('homepage'))
 
     data = request.form
     first_name = data.get('first_name')
