@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 
-app = Flask(__name__,template_folder='AccountHandling')
+app = Flask(__name__,template_folder='Webpages')
 
 # Database setup
 engine = create_engine('sqlite:///app.db')
@@ -80,7 +80,7 @@ def create_profile_page():
 @app.route('/save-profile', methods=['POST'])
 def save_profile():
     if 'username' not in session:
-        return redirect(url_for('index.html'))
+        return redirect(url_for('login_page'))
 
     data = request.form
     first_name = data.get('first_name')
