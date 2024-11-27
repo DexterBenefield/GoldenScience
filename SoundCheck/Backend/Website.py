@@ -144,7 +144,8 @@ def account():
 
 @app.route('/userposts', methods = ['GET','POST'])
 def individualposts():
-    return render_template('individualposts.html')
+    user_id = session.get('user_id')
+    return render_template('individualposts.html' , user=user_id)
 
 if __name__ == '__main__':
     app.run(debug=True)
