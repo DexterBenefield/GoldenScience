@@ -127,17 +127,11 @@ def save_profile():
 def homepage():
     return render_template('homepage.html')
 
-<<<<<<< HEAD
-#@app.route('/rating', methods=['GET'])
-#def rating_page():
-#   return render_template('reveiws.html')
-=======
 @app.route('/concerts' , methods=['GET', 'POST'])
 def Concerts():
     concerts = compileConcerts()
     return render_template('concertFinder.html', concerts = concerts)
 
->>>>>>> 5b953a9f9fe264679edb0123b75ff78ba937594d
 
 if __name__ == '__main__':
     app.run(debug=True)
