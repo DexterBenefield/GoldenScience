@@ -133,18 +133,22 @@ def Concerts():
     return render_template('concertFinder.html', concerts = concerts)
 @app.route('/account' , methods = ['GET','POST'])
 def account():
-    user_id = session.get('user_id')
-    if user_id:
-        user = user_id.display_profile()
+    username = session.get('username')  
+    if username:
+        user = db_session.query(UserProfile).filter_by(username=username).first()
+        if user:
+            user_data = user.display_profile() 
+            return render_template('profilePage.html', user=user_data)
+        else:
+            flash("User not found.")
     else:
-        user = None
+        flash("You must log in to access this page.")
+        return redirect(url_for('login_page'))
 
-    # Pass user data to the template
-    return render_template('profilePage.html', user=user)
-
+    return render_template('profilePage.html', user=None)
 @app.route('/userposts', methods = ['GET','POST'])
 def individualposts():
-    user_id = session.get('user_id')
+    user_id = session.get('username')
     return render_template('individualposts.html' , user=user_id)
 
 if __name__ == '__main__':
