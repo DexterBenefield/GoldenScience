@@ -6,17 +6,18 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 from ConcertFinder import compileConcerts
-from UserProfile import UserProfile
+from RatingDatabase import Rating, Base
+
 app = Flask(__name__,template_folder='Webpages')
 
 app.secret_key = 'your_unique_secret_key'
 
 # Database setup
 engine = create_engine('sqlite:///app.db')
+
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 db_session = Session()
-
 
 
 # Route to serve the registration page
@@ -148,8 +149,59 @@ def account():
     return render_template('profilePage.html', user=None)
 @app.route('/userposts', methods = ['GET','POST'])
 def individualposts():
-    user_id = session.get('username')
-    return render_template('individualposts.html' , user=user_id)
+    username = session.get('username')  
+    if username:
+        user = db_session.query(UserProfile).filter_by(username=username).first()
+        if user:
+            user_data = user.display_profile() 
+            user_reviews = user.reviews
+            return render_template('individualPosts.html', user=user_data)
+        else:
+            flash("User not found.")
+    else:
+        flash("You must log in to access this page.")
+        return redirect(url_for('login_page'))
+@app.route('/leave-a-rating', methods=['GET'])
+def giveRating():
+    return render_template('ReviewPage.html')
+@app.route('/leave-a-rating', methods=['POST'])
+def submitReview():
+    
+        user_id = session.get('username')  # Ensure user_id or username is stored in the session
+        if not user_id:
+            flash("You must be logged in to leave a review.")
+            return redirect(url_for('login_page'))
 
+        review_text = request.form.get('review')
+        location = int(request.form.get('location'))  # This matches the `name="location"` in the HTML
+        parking = int(request.form.get('parking'))
+        merch = int(request.form.get('merch'))
+        sound_quality = int(request.form.get('sound_quality'))
+        set_list = int(request.form.get('set_list'))
+        ticket_price = int(request.form.get('ticket_price'))
+        facilities = int(request.form.get('facilities'))
+        security = int(request.form.get('security'))
+        average_rating = float(request.form.get('average'))
+
+        # Create a new Rating instance
+        new_review = Rating(
+            user_id=user_id,
+            review_text=review_text,
+            location_rating=location,
+            parking_rating=parking,
+            merch_rating=merch,
+            sound_quality_rating=sound_quality,
+            set_list_rating=set_list,
+            ticket_price_rating=ticket_price,
+            facilities_rating=facilities,
+            security_rating=security,
+            average_rating= average_rating
+        )
+
+        # Add to the database
+        db_session.add(new_review)
+        db_session.commit()
+        return redirect(url_for('homepage'))
+    
 if __name__ == '__main__':
     app.run(debug=True)

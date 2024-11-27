@@ -101,7 +101,11 @@
             });
             const average = (total / ratings.length).toFixed(1);
             document.getElementById('average-rating').textContent = `Average Rating: ${average} Stars`;
-        }
+            document.getElementById('average').value = average;
+            averageInput.value = average;
+            console.log('Average:', average);  // Check the value in the browser console
+            console.log('Hidden Input Value:', averageInput.value);
+        }   
     </script>
 </head>
 <body>
@@ -111,7 +115,7 @@
     <main>
         <div class="Rating_System">
             <h1>Write a Review</h1>
-            <form action="/submit-review" method="POST" oninput="calculateAverageRating()">
+            <form action="{{ url_for('submitReview') }}" method="POST" oninput="calculateAverageRating()">
                 <div class="form-group">
                     <label for="review">Your Review</label>
                     <textarea id="review" name="review" rows="6" placeholder="Write your review here..."></textarea>
@@ -207,7 +211,7 @@
                 </div>
 
                 <div class="average-rating" id="average-rating">Average Rating: 0 Stars</div>
-
+                <input type="hidden" id="average" name="average">
                 <div class="form-group">
                     <input type="submit" value="Submit Review">
                 </div>
