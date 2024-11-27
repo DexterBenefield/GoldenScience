@@ -115,5 +115,9 @@ def save_profile():
 def homepage():
     return render_template('homepage.html')
 
+#@app.route('/rating', methods=['GET'])
+#def rating_page():
+#   return render_template('reveiws.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
