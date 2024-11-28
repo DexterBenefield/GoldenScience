@@ -11,7 +11,7 @@
         <h1>{{ user.username }}'s Profile</h1>
         <nav>
             <ul class="nav-links">
-                <li><a href="/posts">My Posts</a></li>
+                <li><a href="/userposts">My Posts</a></li>
                 <li><a href="/reviews">My Reviews</a></li>
                 <li><a href="/logout">Log Out</a></li>
             </ul>
@@ -23,7 +23,7 @@
             <h2>Profile Details</h2>
             <p><strong>Username:</strong> {{ user.username }}</p>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Joined on:</strong> {{ user.join_date.strftime('%Y-%m-%d') }}</p>
+            
         </section>
 
         <section class="quick-actions">
