@@ -30,7 +30,9 @@
                             <strong>Date:</strong> {{ concert[2] }}<br>
                             <strong>Overall Rating:</strong> {{ concert.overall_rating or "No Overall Rating Yet!" }}<br>
                             <strong>Review:</strong> {{ concert.review or "No Reviews Yet!" }}<br>
-                            <a class='cta-button',href="/rate">Leave a Rating!</a>
+                            <form action="{{ url_for('giveRating') }}" method="get">
+                                <button class="cta-button" type="submit">Leave a Rating!</button>
+                            </form>
                         </li>
                 {% endfor %}
             </ul>
