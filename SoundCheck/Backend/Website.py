@@ -7,6 +7,9 @@ from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 from ConcertFinder import compileConcerts
 from RatingDatabase import Rating, Base
+from spotipy import create_spotify_instance, get_user_top_items
+from spotipy.oauth2 import SpotifyOAuth
+from spotipy.cache_handler import FlaskSessionCacheHandler
 
 app = Flask(__name__,template_folder='Webpages')
 
@@ -119,10 +122,40 @@ def save_profile():
             user.profile_pic = profile_pic_path
 
         db_session.commit()
-        return redirect(url_for('homepage'))  # Redirect to homepage after saving profile
+        return redirect(url_for('spotify_login'))  # Redirect to homepage after saving profile
     else:
         flash("User not found.")
         return redirect(url_for('create_profile_page'))
+
+@app.route('/spotify/login')
+def spotify_login():
+    sp_oauth = SpotifyOAuth(
+        client_id='cc68db0bcbf14ddcbc5f1a742c3ea215',
+        client_secret='b37f65f0812e45a398bde333da674671',
+        redirect_uri='http://127.0.0.1:5000/spotify/callback',
+        scope='user-top-read',
+        cache_handler=FlaskSessionCacheHandler(session)
+    )
+    if not sp_oauth.get_cached_token():
+        return redirect(sp_oauth.get_authorize_url())
+    return redirect(url_for('homepage'))
+
+@app.route('/spotify/callback')
+def spotify_callback():
+    sp_oauth = SpotifyOAuth(
+        client_id='cc68db0bcbf14ddcbc5f1a742c3ea215',
+        client_secret='b37f65f0812e45a398bde333da674671',
+        redirect_uri='http://127.0.0.1:5000/spotify/callback',
+        scope='user-top-read',
+        cache_handler=FlaskSessionCacheHandler(session)
+    )
+    code = request.args.get('code')
+    if code:
+        sp_oauth.get_access_token(code)
+        flash("Spotify login successful!")
+        return redirect(url_for('homepage'))  # Redirect to the homepage after successful authorization
+    flash("Spotify login failed.")
+    return redirect(url_for('homepage'))
     
 @app.route('/homepage', methods = ['GET'])
 def homepage():
