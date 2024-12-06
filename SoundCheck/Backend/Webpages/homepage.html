@@ -6,7 +6,7 @@
     <title>My Website</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='homepage.css') }}">
 </head>
-<body>
+<body class="homepage">
     <header class="site-header">
         <h1>Welcome to SoundCheck!</h1>
         <nav>
@@ -17,23 +17,22 @@
             </ul>
         </nav>
     </header>
+    <main class="content">
+        <div class="glass-container">
+            <section>
+                <h2>Find a Concert</h2>
+                <p>Looking For an Event?</p>
+                <form action="{{ url_for('Concerts') }}" method="get">
+                    <button class="cta-button" type="submit">Find Now!</button>
+                </form>
+            </section>
 
-    <main class="glass-container">
-        <section>
-            <h2>Find a Concert</h2>
-            <p>Looking For an Event?</p>
-            <form action="{{ url_for('Concerts') }}" method="get">
-                <button class="cta-button" type="submit">Find Now!</button>
-            </form>
-        </section>
-
-        <section>
-            <h2>Rating</h2>
-            <p>Tell us how you feel about your last concert!</p>
-            <button class="cta-button">Rate Now!</button>
-        </section>
+            <section>
+                <h2>Rating</h2>
+                <p>Tell us how you feel about your last concert!</p>
+                <button class="cta-button">Rate Now!</button>
+            </section>
+        </div>
     </main>
-
-
 </body>
-</html>
+
