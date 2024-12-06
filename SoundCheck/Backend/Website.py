@@ -7,9 +7,13 @@ from sqlalchemy.exc import IntegrityError
 from UserProfile import Base, UserProfile  # Import your SQLAlchemy models
 from ConcertFinder import compileConcerts
 from RatingDatabase import Rating, Base
-from spotipy import create_spotify_instance, get_user_top_items
+from spotipy_access import create_spotify_instance, get_user_top_items
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.cache_handler import FlaskSessionCacheHandler
+from dotenv import load_dotenv
+load_dotenv()
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__,template_folder='Webpages')
 
@@ -122,38 +126,51 @@ def save_profile():
             user.profile_pic = profile_pic_path
 
         db_session.commit()
-        return redirect(url_for('spotify_login'))  # Redirect to homepage after saving profile
+        print("Profile saved. Redirecting to Spotify login...")
+        return redirect(url_for('spotify_login'))  # Redirect to spotify login page after saving profile
     else:
         flash("User not found.")
         return redirect(url_for('create_profile_page'))
-
+    
+SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+    
 @app.route('/spotify/login')
 def spotify_login():
+    session.pop('token_info', None)
     sp_oauth = SpotifyOAuth(
-        client_id='cc68db0bcbf14ddcbc5f1a742c3ea215',
-        client_secret='b37f65f0812e45a398bde333da674671',
+        client_id=SPOTIFY_CLIENT_ID,
+        client_secret=SPOTIFY_CLIENT_SECRET,
         redirect_uri='http://127.0.0.1:5000/spotify/callback',
         scope='user-top-read',
-        cache_handler=FlaskSessionCacheHandler(session)
+        cache_handler=FlaskSessionCacheHandler(session),
+        show_dialog=True
     )
     if not sp_oauth.get_cached_token():
+        print("Redirecting user to Spotify login...")  # Debugging
         return redirect(sp_oauth.get_authorize_url())
+    print("Spotify token already cached.")  # Debugging
     return redirect(url_for('homepage'))
 
 @app.route('/spotify/callback')
 def spotify_callback():
     sp_oauth = SpotifyOAuth(
-        client_id='cc68db0bcbf14ddcbc5f1a742c3ea215',
-        client_secret='b37f65f0812e45a398bde333da674671',
+        client_id=SPOTIFY_CLIENT_ID,
+        client_secret=SPOTIFY_CLIENT_SECRET,
         redirect_uri='http://127.0.0.1:5000/spotify/callback',
         scope='user-top-read',
         cache_handler=FlaskSessionCacheHandler(session)
     )
+    
     code = request.args.get('code')
     if code:
+        print(f"Authorization code received: {code}")
         sp_oauth.get_access_token(code)
+        print("Spotify login successful. Access token obtained.")
         flash("Spotify login successful!")
         return redirect(url_for('homepage'))  # Redirect to the homepage after successful authorization
+    else:
+        print("Spotify login failed. No authorization code received.")
     flash("Spotify login failed.")
     return redirect(url_for('homepage'))
     
@@ -161,14 +178,31 @@ def spotify_callback():
 def homepage():
     return render_template('homepage.html')
 
-#@app.route('/reviews', methods = ['GET'])
-#def reviews():
-#    return render_template('reviews.html')
-
 @app.route('/concerts' , methods=['GET', 'POST'])
 def Concerts():
-    concerts = compileConcerts()
-    return render_template('concertFinder.html', concerts = concerts)
+    personalized = request.args.get('personalized', 'false').lower() == 'true'
+
+    if personalized:
+        artist_limit = 50  
+        print(f"Fetching personalized concerts for the top {artist_limit} artists...")
+        
+        # Gets user's top Spotify artists
+        top_artists_data = get_user_top_items(session, item_type='artists', limit=artist_limit)
+        top_artists = [artist['name'].lower() for artist in top_artists_data]
+        print(f"User's top Spotify artists: {top_artists}")
+        
+        concerts = compileConcerts(top_artists=top_artists)
+        print(f"Personalized concerts retrieved: {len(concerts)} concerts.")
+        title = "Personalized Concerts for You"
+    else:
+        print("Fetching general concerts...")
+        concerts = compileConcerts()
+        print(f"General concerts retrieved: {len(concerts)} concerts.")
+        title = "Concerts Near Me"
+
+    return render_template('concertFinder.html', concerts=concerts, title=title)
+
+
 @app.route('/account' , methods = ['GET','POST'])
 def account():
     username = session.get('username')  
@@ -239,6 +273,6 @@ def submitReview():
         db_session.add(new_review)
         db_session.commit()
         return redirect(url_for('homepage'))
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
