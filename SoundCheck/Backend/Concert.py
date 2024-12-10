@@ -11,18 +11,25 @@ class Concert(Base):
     __tablename__ = 'concerts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    artist_name = Column(String)
-    venue = Column(String)
-    date = Column(Date)
-    overall_rating = Column(Float)
-    ratings = None
+    artist_name = Column(String, nullable=False)
+    venue = Column(String, nullable=False)
+    date = Column(Date, nullable=False)
+    overall_rating = Column(Float, nullable=True)
     review = Column(String, nullable=True)
 
     def __init__(self, artist_name, venue, date):
         self.artist_name = artist_name
         self.venue = venue
-        # Convert the date string to a datetime object
-        self.date = datetime.strptime(date, "%Y-%m-%d").date()
+
+        if isinstance(date, str):
+            self.date = datetime.strptime(date, "%Y-%m-%d").date()
+        elif isinstance(date, datetime):
+            self.date = date.date()
+        elif isinstance(date, datetime.date):
+            self.date = date
+        else:
+            raise ValueError("Invalid date format. Expected str, datetime, or date.")
+
         self.ratings = {
             'venue': None,
             'sound_quality': None,
@@ -42,8 +49,9 @@ class Concert(Base):
     def add_rating(self, category, rating):
         if category in self.ratings and 0 <= rating <= 5:
             self.ratings[category] = rating
-            # Update overall_rating
             self.overall_rating = self.get_overall_rating()
+        else:
+            raise ValueError(f"Invalid category '{category}' or rating '{rating}'.")
 
     # Add a review for the concert
     def add_review(self, review):
